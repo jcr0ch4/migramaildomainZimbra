@@ -35,7 +35,9 @@ usuarios=$(cat $1)
 for i in $usuarios
 do
     malias=$(zmprov ga $i | grep MailAlias|head -1|awk -F ": " '{print $2}')
+    echo "malias -> $malias"
     malias2=$(zmprov ga $i|grep MailAlias|grep "@$maildominio2"|awk -F ": " '{print $2}')
+    echo "malias2 -> $malias2"
     # Se malias2 for vazio 
     if [ -z $malias2 ]
     then 
@@ -43,7 +45,9 @@ do
     # Se nao for vazio 
     else	    
 	dominio=$(echo $malias|awk -F "@" '{print $2}')
+	echo "dominio -> $dominio"
 	dominio2=$(echo $malias2|awk -F "@" '{print $2}')
+	echo "dominio2 -> $dominio2"
 	if [ "$dominio2"=="$maildominio2" ]
 		then
 			echo "Dominio $maildominio2 encontrado ..."	
@@ -65,15 +69,17 @@ do
 					#zmprov did $i $d && echo "$(echo $apagandoidentidade) [ OK ] " || echo "$(echo $apagandoidentidade) [ Falhou ]"
 				done
 	                fi
+
 			# Precisa verificar o retorno para as variaveis
 			aliasnovo=$(echo $malias2|awk -F ": " '{print $2}')
-			novo=$(echo $i|sed -e 's/$maildominio1/$maildominio2/g')
+			novo=$(echo $i|sed -e "s/$(echo $maildominio1)/$(echo $maildominio2)/g")
 	
 			echo "zmprov ra $i $novo "&& echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
 			# VERIFICAR SE A CONTA TEM ALGUM ALIAS
 			#zmprov ra $i $novo && echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
 			#echo "Aguade novamente ... ";read a
-			novo1=$(echo $malias|sed -e 's/$maildominio1/$maildominio2/g')
+			novo1=$(echo $malias|sed -e "s/$(echo $maildominio1)/$(echo $maildominio2)/g")
+			echo $novo1;read a
 			echo "zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]""
 
 			#zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]"
