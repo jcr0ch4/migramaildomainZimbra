@@ -23,7 +23,6 @@
 maildominio1=$2
 maildominio2=$3
 
-
 # Mensagens
 aliasdomino="Criando o alias para o dominio $maildominio1     "
 apagandoidentidade="Apagando identidade    "
@@ -40,11 +39,11 @@ do
     # Se malias2 for vazio 
     if [ -z $malias2 ]
     then 
-	    echo "Conta sem alias $dominio2"
+	    echo "Conta sem alias $maildominio2"
     # Se nao for vazio 
     else	    
-	dominio=$(echo $malias)
-	dominio2=$(echo $malias2)
+	dominio=$(echo $malias|awk -F "@" '{print $2}')
+	dominio2=$(echo $malias2|awk -F "@" '{print $2}')
 	if [ "$dominio2"=="$maildominio2" ]
 		then
 			echo "Dominio $maildominio2 encontrado ..."	
