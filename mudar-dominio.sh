@@ -42,9 +42,17 @@ do
     if [ -z $malias2 ]
     then 
 	    echo "Conta sem alias $maildominio2"
-	    # Preciso :
-	    # 1 - Renomear a conta
-	    # 2 - Corrigir a identidade
+ 	    aliasnovo=$(echo $malias2|awk -F ": " '{print $2}')
+	    novo=$(echo $i|sed -e "s/$(echo $maildominio1)/$(echo $maildominio2)/g")
+            echo "zmprov ra $i $novo "&& echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
+	    zmprov ra $i $novo && echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
+   	    novo1=$(echo $malias|sed -e "s/$(echo $maildominio1)/$(echo $maildominio2)/g")
+    	    echo "zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]""
+ 	    zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]"
+	    # usage:  addAccountAlias(aaa) {name@domain|id} {alias@domain}
+	    echo "zmprov aaa $novo $malias "&& echo "$aliasdominio [ OK ]" || echo "$aliasdominio [ Falhou ]"
+    	    zmprov aaa $novo $malias && echo "$(echo $aliasdominio) [ OK ]" || echo "$(echo $aliasdominio) [ Falhou ]"
+
 
     # Se nao for vazio 
     else	    
@@ -86,9 +94,11 @@ do
 
 			zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]"
 
+			# Se tiver Alias wheatonbrasil.com.br Ele tera um alias caso contrario não 
 			# usage:  addAccountAlias(aaa) {name@domain|id} {alias@domain}
 			echo "zmprov aaa $novo $malias "&& echo "$aliasdominio [ OK ]" || echo "$aliasdominio [ Falhou ]"
-			zmprov aaa $novo $malias2 && echo "$(echo $aliasdominio) [ OK ]" || echo "$(echo $aliasdominio) [ Falhou ]"
+
+			zmprov aaa $novo $malias && echo "$(echo $aliasdominio) [ OK ]" || echo "$(echo $aliasdominio) [ Falhou ]"
 
 	
 		fi
