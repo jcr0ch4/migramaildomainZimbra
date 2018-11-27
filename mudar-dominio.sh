@@ -21,7 +21,7 @@
 
 # Dominio
 maildominio1=$2
-maildomnio2=$3
+maildominio2=$3
 
 
 # Mensagens
