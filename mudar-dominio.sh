@@ -34,7 +34,7 @@ do
     malias=$(zmprov ga $i | grep MailAlias|head -1)
     malias2=$(zmprov ga $i|grep MailAlias|grep "@wheaton.com.br"|awk -F ": " '{print $2}')
     # Se malias2 for vazio 
-    if [ -z $malias2]
+    if [ -z $malias2 ]
     then 
 	    echo "Conta sem alias wheaton.com.br"
     # Se nao for vazio 
@@ -69,7 +69,7 @@ do
 			echo "zmprov ra $i $novo "&& echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
 			# VERIFICAR SE A CONTA TEM ALGUM ALIAS
 			#zmprov ra $i $novo && echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
-			echo "Aguade novamente ... ";read a
+			#echo "Aguade novamente ... ";read a
 			novo1=$(echo $malias|awk -F ": " '{print $2}'|sed -e 's/wheatonbrasil/wheaton/g')
 			echo "zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]""
 
