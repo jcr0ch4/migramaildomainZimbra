@@ -19,31 +19,35 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 
+# Dominio
+maildominio1=$2
+maildomnio2=$3
+
 
 # Mensagens
-aliasdomino="Criando o alias para o dominio wheatonbrasil.com.br     "
+aliasdomino="Criando o alias para o dominio $maildominio1     "
 apagandoidentidade="Apagando identidade    "
-criandonovaconta="Criando a nova conta no dominio wheaton.com.br     "
+criandonovaconta="Criando a nova conta no dominio $maildominio2     "
 confidentidade="Configurando a identidade DEFAULT     "
-renomeaconta="Renomeando a conta do domino wheatonbrasil.com.br para wheaton.com.br     "
-#usuarios=$(zmprov -l gaa |grep wheatonbrasil.com.br)
+renomeaconta="Renomeando a conta do domino $maildominio1 para $maildominio2     "
+#usuarios=$(zmprov -l gaa |grep $maildominio1)
 # Pega um arquivo como parametro, este arquivo deve ter em seu conteudo os e-mails que devem ser migrados
 usuarios=$(cat $1)
 for i in $usuarios
 do
     malias=$(zmprov ga $i | grep MailAlias|head -1|awk -F ": " '{print $2}')
-    malias2=$(zmprov ga $i|grep MailAlias|grep "@wheaton.com.br"|awk -F ": " '{print $2}')
+    malias2=$(zmprov ga $i|grep MailAlias|grep "@$maildominio2"|awk -F ": " '{print $2}')
     # Se malias2 for vazio 
     if [ -z $malias2 ]
     then 
-	    echo "Conta sem alias wheaton.com.br"
+	    echo "Conta sem alias $dominio2"
     # Se nao for vazio 
     else	    
 	dominio=$(echo $malias|awk -F "@" '{print $2}')
 	dominio2=$(echo $malias2|awk -F "@" '{print $2}')
-	if [ "$dominio2"=="wheaton.com.br" ]
+	if [ "$dominio2"=="$maildominio2" ]
 		then
-			echo "Dominio wheaton.com.br encontrado ..."	
+			echo "Dominio $maildominio2 encontrado ..."	
 			echo "Apagando o Alias $(echo $malias2|awk -F ":" '{print $2}') do $dominio2"
 				
 			echo "zmprov raa $i $rmail"&& echo "$criandonovaconta [ OK ] "||echo "$criandonovaconta [ Falhou ]"
@@ -63,14 +67,14 @@ do
 				done
 	                fi
 			# Precisa verificar o retorno para as variaveis
-			#aliasnovo=$(echo $malias|awk -F ": " '{print $2}')
-			novo=$(echo $i|sed -e 's/wheatonbrasil/wheaton/g')
+			aliasnovo=$(echo $malias|awk -F ": " '{print $2}')
+			novo=$(echo $i|sed -e 's/$maildominio1/$maildomino2/g')
 	
 			echo "zmprov ra $i $novo "&& echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
 			# VERIFICAR SE A CONTA TEM ALGUM ALIAS
 			#zmprov ra $i $novo && echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
 			#echo "Aguade novamente ... ";read a
-			novo1=$(echo $malias|awk -F ": " '{print $2}'|sed -e 's/wheatonbrasil/wheaton/g')
+			novo1=$(echo $malias|awk -F ": " '{print $2}'|sed -e 's/$maildominio1/$maildominio2/g')
 			echo "zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]""
 
 			#zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]"
