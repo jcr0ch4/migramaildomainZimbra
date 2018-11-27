@@ -73,7 +73,7 @@ do
 			# VERIFICAR SE A CONTA TEM ALGUM ALIAS
 			#zmprov ra $i $novo && echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
 			#echo "Aguade novamente ... ";read a
-			novo1=$(echo $malias|awk -F ": " '{print $2}'|sed -e 's/$maildominio1/$maildominio2/g')
+			novo1=$(echo $malias|sed -e 's/$maildominio1/$maildominio2/g')
 			echo "zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]""
 
 			#zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]"
