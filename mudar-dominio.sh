@@ -42,6 +42,10 @@ do
     if [ -z $malias2 ]
     then 
 	    echo "Conta sem alias $maildominio2"
+	    # Preciso :
+	    # 1 - Renomear a conta
+	    # 2 - Corrigir a identidade
+
     # Se nao for vazio 
     else	    
 	dominio=$(echo $malias|awk -F "@" '{print $2}')
@@ -54,7 +58,7 @@ do
 			echo "Apagando o Alias $(echo $malias2|awk -F ":" '{print $2}') do $dominio2"
 				
 			echo "zmprov raa $i $rmail"&& echo "$criandonovaconta [ OK ] "||echo "$criandonovaconta [ Falhou ]"
-			#zmprov raa $i $malias2 && echo "$(echo $criandonovaconta) [ OK ] "||echo "$criandonovaconta [ Falhou ]"
+			zmprov raa $i $malias2 && echo "$(echo $criandonovaconta) [ OK ] "||echo "$criandonovaconta [ Falhou ]"
 
 			# Precisa ser verificado se o retorno esta OK ou nao
 			identidades=$(zmprov gid $i|grep name |awk '{print $3}'|grep -v DEFAULT)
@@ -66,27 +70,25 @@ do
 				for d in $identidades
 				do
 					echo "zmprov did $i $d "&& echo "$(echo $apagandoidentidade) [ OK ] " || echo "$(echo $apagandoidentidade) [ Falhou ]"
-					#zmprov did $i $d && echo "$(echo $apagandoidentidade) [ OK ] " || echo "$(echo $apagandoidentidade) [ Falhou ]"
+					zmprov did $i $d && echo "$(echo $apagandoidentidade) [ OK ] " || echo "$(echo $apagandoidentidade) [ Falhou ]"
 				done
 	                fi
-
-			# Precisa verificar o retorno para as variaveis
 			aliasnovo=$(echo $malias2|awk -F ": " '{print $2}')
 			novo=$(echo $i|sed -e "s/$(echo $maildominio1)/$(echo $maildominio2)/g")
 	
 			echo "zmprov ra $i $novo "&& echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
 			# VERIFICAR SE A CONTA TEM ALGUM ALIAS
-			#zmprov ra $i $novo && echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
+			zmprov ra $i $novo && echo "$(echo $renomeaconta) [OK]" || echo "$(echo $renomeaconta) [ Falhou ]"
 			#echo "Aguade novamente ... ";read a
 			novo1=$(echo $malias|sed -e "s/$(echo $maildominio1)/$(echo $maildominio2)/g")
 			echo $novo1;read a
 			echo "zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]""
 
-			#zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]"
+			zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]"
 
 			# usage:  addAccountAlias(aaa) {name@domain|id} {alias@domain}
 			echo "zmprov aaa $novo $malias "&& echo "$aliasdominio [ OK ]" || echo "$aliasdominio [ Falhou ]"
-			#zmprov aaa $novo $malias2 && echo "$(echo $aliasdominio) [ OK ]" || echo "$(echo $aliasdominio) [ Falhou ]"
+			zmprov aaa $novo $malias2 && echo "$(echo $aliasdominio) [ OK ]" || echo "$(echo $aliasdominio) [ Falhou ]"
 
 	
 		fi
