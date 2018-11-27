@@ -43,8 +43,8 @@ do
 	    echo "Conta sem alias $dominio2"
     # Se nao for vazio 
     else	    
-	dominio=$(echo $malias|awk -F "@" '{print $2}')
-	dominio2=$(echo $malias2|awk -F "@" '{print $2}')
+	dominio=$(echo $malias)
+	dominio2=$(echo $malias2)
 	if [ "$dominio2"=="$maildominio2" ]
 		then
 			echo "Dominio $maildominio2 encontrado ..."	
@@ -79,7 +79,7 @@ do
 
 			#zmprov mid $novo DEFAULT zimbraPrefFromAddress $novo1 zimbraPrefReplyToAddress $novo1 zimbraPrefWhenSentToAddresses $novo1 zimbraPrefWhenSentToEnabled TRUE && echo "$(echo $confidentidade) [ OK ]" || echo "$(echo $confidentidade) [ Falhou ]"
 
-			echo "zmprov aaa $novo $aliasnovo "&& echo "$aliasdominio [ OK ]" || echo "$aliasdominio [ Falhou ]"
+			echo "zmprov aaa $novo $malias "&& echo "$aliasdominio [ OK ]" || echo "$aliasdominio [ Falhou ]"
 			#zmprov aaa $novo $malias2 && echo "$(echo $aliasdominio) [ OK ]" || echo "$(echo $aliasdominio) [ Falhou ]"
 
 	
