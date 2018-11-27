@@ -31,7 +31,7 @@ renomeaconta="Renomeando a conta do domino wheatonbrasil.com.br para wheaton.com
 usuarios=$(cat $1)
 for i in $usuarios
 do
-    malias=$(zmprov ga $i | grep MailAlias|head -1)
+    malias=$(zmprov ga $i | grep MailAlias|head -1|awk -F ": " '{print $2}')
     malias2=$(zmprov ga $i|grep MailAlias|grep "@wheaton.com.br"|awk -F ": " '{print $2}')
     # Se malias2 for vazio 
     if [ -z $malias2 ]
