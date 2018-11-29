@@ -87,7 +87,7 @@ else
 							echo "zmprov did $i $d "&& echo "$apagandoidentidade [ OK ] " || echo "$apagandoidentidade [ Falhou ]"
 							zmprov did $i $d && echo "$apagandoidentidade [ OK ] " || echo "$apagandoidentidade [ Falhou ]"
 						done
-	                fi
+			                fi
 					aliasnovo=$(echo $malias2)
 					novo=$(echo $i|sed -e "s/$(echo $maildominio1)/$(echo $maildominio2)/g")
 					echo "zmprov ra $i $novo "&& echo "$renomeaconta [OK]" || echo "$renomeaconta [ Falhou ]"
