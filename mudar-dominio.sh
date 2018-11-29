@@ -103,6 +103,7 @@ else
 					# usage:  addAccountAlias(aaa) {name@domain|id} {alias@domain}
 					echo "zmprov aaa $novo $i "&& echo "$(echo $aliasdominio) [ OK ]" || echo "$(echo $aliasdominio) [ Falhou ]"
 					zmprov aaa $novo $i && echo "$(echo $aliasdominio) [ OK ] *" || echo "$(echo $aliasdominio) [ Falhou ]"
+
 	
 				fi
 			fi
